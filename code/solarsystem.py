@@ -1,29 +1,6 @@
 from numpy import *
 from numpy.linalg import *
 
-import matplotlib as mpl
-
-mpl.use("pgf")
-pgf_with_pdflatex = {
-    "font.family": "serif",
-    "font.serif": [],
-    "font.size" : 11.0,
-    "pgf.preamble": [
-         r"\usepackage[utf8]{inputenc}",
-         r"\usepackage[T1]{fontenc}",
-         r"\usepackage{cmbright}",
-         r"\usepackage{newtxtext}",
-         r"\usepackage{bm}",
-         r"\usepackage{amsmath,amsthm}"
-         ]
-}
-mpl.rcParams.update(pgf_with_pdflatex)
-# blue, violet, green, brown, red ,orange
-mpl.rcParams['axes.color_cycle'] = ['b', '#800080', '#009900', '#964B00', '#d30704' ,'#ff6100']
-
-
-
-
 
 class cluster:
     def __init__(self, coordinates, velocities, masses):
@@ -80,7 +57,6 @@ class cluster:
 
         for i in arange(N-1):
             for j in arange(self.n):
-                # endre kreftene dersom sola er stasjonaer
                 F[j] = G*sum(((r[j,i]-r[arange(0,self.n)!=j,i]).T*M[arange(0,self.n)!=j]*norm(r[j,i]-r[arange(0,self.n)!=j,i],axis=1)**-3).T,axis=0)
                 r[j,i+1] = r[j,i] + h*v[j,i]
                 v[j,i+1] = v[j,i] - h*F[j]
@@ -104,6 +80,7 @@ class cluster:
                 v[j,i+1] = v[j,i] - (h/2.)*(Fpp[j] + F[j])
         return r,v,V
 
+# data from NASA
 coords= array([
 [2.915436198756346E-03, -7.544693723556148E-04, -1.390618528070157E-04],
 [1.302847368172481E-01,  2.801140182961619E-01,  1.112470944910341E-02],
@@ -131,17 +108,25 @@ velocities = 365*array([
 ])
 # sun, mercury,venus,earth,mars, jupiter, saturn, uranus, nepute, pluto
 masses = asarray([1, 3.285e23/1.98855e30, 4.867E24/1.98855e30, 3.003e-6, 6.39E23/1.98855e30, 1047.**-1, 5.683E26/1.98855e30, 8.681E25/1.98855e30, 1.024E26/1.98855e30, 1.31e22/1.98855e30])
+
+
+# initiate solar system
 h = 1e-2
 N = int(300/h)
 solarsystem = cluster(coords, velocities, masses)
+
+# find the velocity and position of all the planets
 data,labels = solarsystem.method("verlet").solve(['v','r'], h, N)
+
+
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-# plot outer solar system
 
-f = plt.figure(figsize=(0.8*4,0.8*3))#figsize=(0.8*4,0.8*3))
+
+# plot outer solar system
+f = plt.figure(figsize=(0.8*4,0.8*3))
 ax = plt.gca(projection='3d')
 for r, j in zip(data[1],range(1,len(data[1])+1)):
     ln1=ax.plot(r[::100,0], r[::100,1], r[::100,2],'k')
@@ -149,23 +134,18 @@ for r, j in zip(data[1],range(1,len(data[1])+1)):
         ax.scatter(r[N-1:,0], r[N-1:,1], r[N-1:,2],c='k')
 
 plt.locator_params(nbins=4)
-
 title = r'Orbitals of the solar system to scale'
-
 ax.set_title(title, fontsize=11, loc='center')
 ax.set_xlabel(ur'$x$   [AU]', fontsize=11)
 ax.set_ylabel(ur'$y$   [AU]', fontsize=11)
 ax.set_zlabel(ur'$z$   [AU]', fontsize=11)
 plt.tight_layout(0.5)
-plt.savefig('outer.png')#, facecolor='w', edgecolor='w', orientation='portrait')#, transparent=False)
-plt.savefig('outer.pgf')#, facecolor='w', edgecolor='w', orientation='portrait')#, transparent=False)
-
+plt.savefig('../benchmark/outer.png')
 
 
 
 # plot inner solar system
-
-f = plt.figure(figsize=(0.8*4,0.8*3))#figsize=(0.8*4,0.8*3))
+f = plt.figure(figsize=(0.8*4,0.8*3))
 ax = plt.gca(projection='3d')
 for r,j in zip(data[1,0:6],range(1,6)):
     if j == 2:
@@ -176,14 +156,11 @@ for r,j in zip(data[1,0:6],range(1,6)):
         ax.scatter(r[1000,0], r[1000,1], r[1000,2],c='k')
 
 plt.locator_params(nbins=3)
-
 title = r'Orbitals of inner solar system'
-
 ax.set_title(title, fontsize=11, loc='center')
 ax.set_xlabel(ur'$x$   [AU]', fontsize=11)
 ax.set_ylabel(ur'$y$   [AU]', fontsize=11)
 ax.set_zlabel(ur'$z$   [AU]', fontsize=11)
 ax.set_zlim(-1,1)
 plt.tight_layout(0.5)
-plt.savefig('inner.png')#, facecolor='w', edgecolor='w', transparent=True)
-plt.savefig('inner.pgf')
+plt.savefig('../benchmark/inner.png')
