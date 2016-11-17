@@ -1,0 +1,5 @@
+Running
+
+$ python earthsun.py
+
+Saves a plot of earth orbiting sun called earthsun.pgf to the benchmark directory

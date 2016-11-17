@@ -1,0 +1,7 @@
+Running
+
+$ python quantearthsun.py
+
+Produces the two figures quantearthsun-a.png and quantearthsun-b.png in this directory and prints:
+
+T0,U0,p0:  5.92768440329e-05 -0.000118553688066 1.88684054775e-05

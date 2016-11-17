@@ -1,0 +1,9 @@
+Running:
+
+$ python grcorrection.py
+
+Produces the figures grcorrection.png and grcorrection2.png saved in this directory and prints:
+
+[ -3.0099232   14.37072714  19.76024687  25.14924943  42.52908539]
+
+Which are the gr correction in year 20,40,60,80 and 100 respectively, as used in the report.

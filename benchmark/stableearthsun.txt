@@ -1,0 +1,5 @@
+Running:
+
+$ python stableearthsun.py
+
+Produces the two plots stableearthsun-1.png and stableearthsun-100.png in this directory

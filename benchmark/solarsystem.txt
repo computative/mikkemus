@@ -1,0 +1,5 @@
+Running
+
+$ python solarsystem.py
+
+produces the two figures inner.png and outer.png as saved in this directory

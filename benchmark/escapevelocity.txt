@@ -1,0 +1,5 @@
+Running:
+
+$ python escapevelocity.py
+
+produces the figure escapevelocity.png which is saved in this directory

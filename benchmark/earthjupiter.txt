@@ -1,0 +1,5 @@
+Running
+
+$ python earthjupiter.py
+
+produces figure earthjupiter.png as saved in this directory for your reference
